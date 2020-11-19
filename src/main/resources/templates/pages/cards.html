@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}"
+      with:title="'Product Detail'">
+	<th:block layout:fragment="content">
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Home</a></li>
+							<li class="active">Giỏ hàng</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+		<div class="section">
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<table class="table">
+						<thead>
+		                	<tr>
+		                		<th scope="col">Tên sản phẩm</th>
+		                		<th scope="col">Số lượng</th>
+		                		<th scope="col">Đơn giá</th>
+		                		<th scope="col">Tổng giá</th>
+		                		<th scope="col">Action</th>
+		                	</tr>
+		                </thead>
+		                <tbody>
+		                	<tr th:each="card : ${listCards}">
+		                		<td th:text="${card.name}"></td>
+		                		<td th:text="${card.quality}"></td>
+		                		<td th:text="${card.price}"></td>
+		                		<td th:text="${(card.price*card.quality)}"></td>
+		                		<td>
+		                			<a href="javacript:void(0)" class="delete-card" th:productId="${card.productId}">Xóa</a>
+		                		</td>
+		                	</tr>
+		                </tbody>
+					</table>
+					<a class="btn btn-primary" href="/shopping-cart/create">Đặt hàng</a>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="lib_script">
+		<script>
+			$('body').on('click', '.delete-card', function(e){
+				e.preventDefault();
+				const pId = $(this).attr('productid');
+				window.location.href = `/shopping-cart/delete?productId=${pId}`;
+			});
+		</script>
+	</th:block>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}"
+      with:title="'Thông tin giỏ hàng'">
+	<th:block layout:fragment="content">
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<form id="page" th:action="@{/shopping-cart/create}" th:object="${customer}" method="POST" >
+					  <div class="form-group">
+					    <label>Tên khách hàng</label>
+					    <input th:field="*{customerName}" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Nhập tên">
+					    <small th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}" id="nameHelp" class="form-text text-muted"></small>
+					  </div>
+					  <div class="form-group">
+					    <label>Số điện thoại</label>
+					    <input th:field="*{phone}" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Nhập số điện thoại">
+					    <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" id="nameHelp" class="form-text text-muted"></small>
+					  </div>
+					  <div class="form-group">
+					    <label>Email</label>
+					    <input th:field="*{email}" type="text" class="form-control" placeholder="Email">
+					  	<small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="form-text text-muted"></small>
+					  </div>
+					  <div class="form-group">
+					    <label>Địa chỉ</label>
+					    <textarea th:field="*{address}" rows="4" class="form-control" placeholder="Địa chỉ"></textarea>
+					  	<small th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="form-text text-muted"></small>
+					  </div>
+					  <button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{adminlayout}"
+      with:title="'Tạo mới danh mục sản phẩm'">
+      <th:block layout:fragment="custom_css">
+      	<link rel="stylesheet" th:href="@{/ad-st/plugins/icheck-bootstrap/icheck-bootstrap.min.css}"/>
+      </th:block>
+	<th:block layout:fragment="content">
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>Thêm/Sửa sản phẩm</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="/admin/category">Danh sách sản phẩm</a></li>
+	              <li class="breadcrumb-item active">Thêm / Sửa</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div><!-- /.container-fluid -->
+	    </section>
+		<form id="formProduct" class="row" role="form" th:action="@{'/admin/product/' + ${product.id == null ? 'create' : 'update?id=' + product.id}}" th:object="${product}" 
+			enctype="multipart/form-data" method="POST">
+           <div class="col-md-4">
+           		<div class="card-body">
+		             <div class="form-group">
+		               <label>Tên sản phẩm</label>
+		               <input th:field="*{name}" type="text" class="form-control" placeholder="Nhập tên danh mục">
+		               <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" id="nameHelp" class="form-text text-muted"></small>
+		             </div>
+		             <div class="form-group">
+		               <label>Tiêu đề</label>
+		               <input th:field="*{title}" type="text" class="form-control" placeholder="Nhập tiêu đề">
+		             </div>
+		             <div class="form-group">
+		               <label>Mô tả</label>
+		               <textarea th:field="*{desc}" rows="5" class="form-control" placeholder="Nhập mô tả"></textarea>
+		             </div>
+		             <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+		                <thead>
+		                	<tr role="row">
+		                		<th class="sorting_asc" rowspan="1" colspan="1" >File</th>
+		                		<th class="sorting" rowspan="1" colspan="1">Hình đại diện</th>
+		                		<th class="sorting" rowspan="1" colspan="1">Hình Slider</th>
+		                	</tr>
+		                </thead>
+		                <tbody>
+			                <tr th:each="image : ${listImages}" role="row" class="odd">
+			                  <td>
+			                  	<img style="width:80px; height:60px;" th:src="${image.file}" />
+			                  </td>
+			                  <td>
+			                  	<div class="icheck-success d-inline">
+			                        <input th:checked="${image.isPresident}" th:alias-id="${image.id}" th:id="${(image.id + 100)}" data="isPresident" type="checkbox">
+			                        <label th:for="${(image.id + 100)}">Hình đại diện</label>
+			                    </div>
+			                  </td>
+			                  <td>
+			                  	<div class="icheck-success d-inline">
+			                        <input th:checked="${image.isSlider}" th:alias-id="${image.id}" th:id="${image.id}" data="isSlider" type="checkbox">
+			                        <label th:for="${image.id}" >Hình Slider</label>
+			                    </div>
+			                  </td>
+			                </tr>
+		                </tbody>
+		              </table>
+		             <div class="form-group">
+		               <label>Giá tham khảo</label>
+		               <input th:field="*{priceRef}" type="text" class="form-control" placeholder="Giá tham khảo">
+		             	<small th:if="${#fields.hasErrors('priceRef')}" th:errors="*{priceRef}" id="nameHelp" class="form-text text-muted"></small>
+		             </div>
+		             <div class="form-group">
+		               <label>Giá bán</label>
+		               <input th:field="*{priceSale}" type="text" class="form-control" placeholder="Giá bán">
+		             	<small th:if="${#fields.hasErrors('priceSale')}" th:errors="*{priceSale}" id="nameHelp" class="form-text text-muted"></small>
+		             </div>
+		             <div class="form-group">
+		                <label>Trạng thái</label>
+		                <select th:field="*{status}" class="custom-select">
+		                  <option value="1">Kích hoạt</option>
+		                  <option value="0">Ngưng</option>
+		                </select>
+		             </div>
+		             <div class="form-group">
+		                <label>Danh mục</label>
+		                <select th:field="*{categoryId}" class="custom-select">
+		                  <option th:each="category : ${listCategory}" 
+		                  		th:value="${category.id}"
+		                  		th:text="${category.name}"></option>
+		                </select>
+		             </div>
+		             <div class="form-group">
+		                <label>Upload hình ảnh</label>
+		                <input name="multipartFile" type="file" multiple>
+		             </div>
+		           </div>
+		           <div class="card-footer">
+		             <button type="submit" class="btn btn-primary">Submit</button>
+		           </div>
+           </div>
+           <div class="col-md-8" style="margin-top:20px">
+           	 <div class="form-group">
+			    <label>Nội dung</label>
+			    <textarea th:field="*{content}" id="editor" rows="4" class="form-control"></textarea>
+			 </div>
+           </div>
+         </form>
+	</th:block>
+	<th:block layout:fragment="lib_script">
+		<script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+		<script>
+		    ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
+		        console.error( error );
+		    });
+		</script>
+		<script>
+			$('#formProduct :checkbox').change(function(){
+				$.get('/api/product-image', {
+					id: $(this).attr("alias-id"),
+					data: $(this).attr("data"),
+					value: this.checked == true ? 1 : 0
+				}, function(data){
+					console.log(data);
+				})
+			});
+		</script>
+	</th:block>
+</html>

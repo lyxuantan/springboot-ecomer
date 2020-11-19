@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}"
+      with:title="'create page'">
+	<th:block layout:fragment="content">
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<form id="page" th:action="@{/pages/create}" th:object="${page}" method="POST" >
+					  <div class="form-group">
+					    <label>Tên bài viết</label>
+					    <input th:field="*{name}" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Nhập tên bài">
+					    <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" id="nameHelp" class="form-text text-muted"></small>
+					  </div>
+					  <div class="form-group">
+					    <label>Tiêu đề</label>
+					    <input th:field="*{title}" type="text" class="form-control" placeholder="Tiêu đề">
+					  </div>
+					  <div class="form-group">
+					    <label>Mô tả</label>
+					    <textarea th:field="*{desc}" rows="4" class="form-control" placeholder="Mô tả"></textarea>
+					  </div>
+					  <div class="form-group">
+					    <label>Trạng thái</label>
+					    <select th:field="*{status}" class="form-control">
+					      <option value="1">Kích hoạt</option>
+					      <option value="0">Ngưng</option>
+					    </select>
+						</div>
+						<div class="form-group">
+						    <label>Danh mục</label>
+						    <select th:field="*{cate}" class="form-control">
+						      <option value="1">Hàng gia dụng</option>
+						      <option value="2">Hàng thời trang</option>
+						    </select>
+						</div>
+						<div class="form-group">
+						    <label>Nội dung</label>
+						    <textarea th:field="*{content}" id="editor" rows="4" class="form-control"></textarea>
+						 </div>
+					  <button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="lib_script">
+		<script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+		<script>
+		    ClassicEditor.create( document.querySelector( '#editor' ) ).catch( error => {
+		        console.error( error );
+		    });
+		</script>
+	</th:block>
+</html>

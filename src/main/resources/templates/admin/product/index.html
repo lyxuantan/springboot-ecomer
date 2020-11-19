@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{adminlayout}"
+      with:title="'Danh mục sản phẩm'">
+     <th:block layout:fragment="custom_css">
+     	<link rel="stylesheet" th:href="@{/ad-st/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}"/>
+     	<link rel="stylesheet" th:href="@{/ad-st/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}"/>
+     </th:block>
+	<th:block layout:fragment="content">
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1>Danh sách sản phẩm</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+	              <li class="breadcrumb-item active">Sản phẩm</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+	    <section class="content">
+	      <div class="row">
+	        <div class="col-12">
+	          <div class="card">
+	            <div class="card-body">
+	              <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+	              	<a href="/admin/product/create" class="btn bg-gradient-primary">Tạo mới</a>
+	              	<div class="row">
+	              		<div class="col-sm-12">
+	              			<table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+				                <thead>
+				                	<tr role="row">
+				                		<th class="sorting_asc" rowspan="1" colspan="1" >Tên sản phẩm</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Danh mục</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Tiêu đề</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Mô tả</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Ngày tạo</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Trạng thái</th>
+				                		<th class="sorting" rowspan="1" colspan="1">Action</th>
+				                	</tr>
+				                </thead>
+				                <tbody>
+				                	<tr th:if="${listProduct.empty}">
+							            <td colspan="7"> No Product Available </td>
+							        </tr>
+					                <tr th:each="product : ${listProduct}" role="row" class="odd">
+						                  <td th:text="${product.name}"></td>
+						                  <td th:text="${product.lableCategory()}"></td>
+						                  <td th:text="${product.title}"></td>
+						                  <td th:text="${product.desc}"></td>
+						                  <td th:text="${product.createTime}"></td>
+						                  <td th:text="${product.statusLable()}"></td>
+						                  <td><a th:href="@{'/admin/product/update?id=' + ${product.id}}">Sửa</a></td>
+					                </tr>
+				                </tbody>
+				              </table>
+				              <div class="row" th:if="${pager.totalPage != 1}")>
+				              	<div class="col-md-12">
+					              	<nav aria-label="Page navigation example">
+									  <ul class="pagination">
+									    <li th:class="${pager.currentPage == 1} ? 'disabled page-item' : 'page-item'">
+									      <a class="page-link" th:href="@{/admin/product(currentPage=1)}" aria-label="Previous">
+									        <span aria-hidden="true">&laquo;</span>
+									        <span class="sr-only">Previous</span>
+									      </a>
+									    </li>
+									    <li th:each="page:${#numbers.sequence(pager.startPage,pager.endPage)}"
+									    	th:class="${pager.currentPage == page} ? 'disabled page-item' : 'page-item'">
+									    	<a class="page-link" th:text="${page}" th:href="@{/admin/product(currentPage=${page})}"></a>
+									    </li>
+									    <li th:class="${pager.currentPage == pager.totalPage} ? 'disabled page-item' : 'page-item'">
+									      <a class="page-link" th:href="@{/admin/product(currentPage=${pager.totalPage})}" aria-label="Next">
+									        <span aria-hidden="true">&raquo;</span>
+									        <span class="sr-only">Next</span>
+									      </a>
+									    </li>
+									  </ul>
+									</nav>
+				              	</div>
+				              </div>
+				           </div>
+				     </div>
+	              	</div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+	</th:block>
+</html>
